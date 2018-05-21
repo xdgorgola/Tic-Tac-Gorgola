@@ -3,6 +3,8 @@ import copy
 #                ["v","v","j"],
 #                ["c","j","j"]]
 
+#PRUEBA
+
 tableroVieja = [["v","v","v"],
                 ["v","v","v"],
                 ["v","v","v"]]
