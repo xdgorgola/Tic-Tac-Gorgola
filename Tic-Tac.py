@@ -5,6 +5,7 @@ import copy
 
 #PRUEBA
 #
+#
 
 tableroVieja = [["v","v","v"],
                 ["v","v","v"],
