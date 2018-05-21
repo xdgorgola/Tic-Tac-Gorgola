@@ -1,16 +1,27 @@
-#tableroVieja = [["v","v","v"],
-#                ["v","v","j"],
-#                ["c","j","j"]]
-
 tableroVieja = [["v","v","v"],
                 ["v","v","v"],
                 ["v","v","v"]]
 
 
+#CONSIDERACIONES RESPECTO AL TABLERO:
+# "v": Casilla vacia
+# "j": Jugador
+# "c": Computadora
+
+
+#Simplemente pide y refleja una jugada *valga la redundancia* del jugador
 def elegirJugada(turno: str, tablero: [[str]]):
-    jugada = (int(input("fila> ")),int(input("columna> ")))
+	while True:
+    	jugada = (int(input("Fila: ")),int(input("Columna: ")))
+    	try:
+    		assert(0 <= jugada[0] <= 2 and 0 <= jugada[1] <= 2)
+    		break
+    	except:
+    		print("Rango de valores permitidos: 0-2.\nVolviendo a intentar...")
     tablero[jugada[0]][jugada[1]] = turno
 
+
+#Chequea si en una columna si gano el jugador "turno"
 def chequeoVertical(columna: int, tablero: [[str]], turno: str):
     contador = 0
     for i in range(0,3):
@@ -23,6 +34,7 @@ def chequeoVertical(columna: int, tablero: [[str]], turno: str):
     return ganador
 
 
+#Chequea si en una fila si gano el jugador "turno"
 def chequeoHorizontal(fila: int, tablero: [[str]], turno: str):
     contador = 0
     for i in range(0,3):
@@ -35,6 +47,7 @@ def chequeoHorizontal(fila: int, tablero: [[str]], turno: str):
     return ganador
 
 
+#Chequea si el jugador "turno" gano en la diagonal /
 def chequeoDiagonalDer(tablero: [[str]], turno: str):
     contador = 0
     for i in range(0,3):
@@ -47,6 +60,7 @@ def chequeoDiagonalDer(tablero: [[str]], turno: str):
     return ganador
 
 
+#Chequea si el jugador "turno" gano en la diagonal \
 def chequeoDiagonalIzq(tablero: [[str]], turno: str):
     contador = 0
     for i in range(0,3):
@@ -59,6 +73,9 @@ def chequeoDiagonalIzq(tablero: [[str]], turno: str):
     return ganador
 
 
+#Chequea si hay un ganador o empate
+#TODO-LIST
+#Los chequeos de las diagonales se pueden hacer de primero o afuera del for, no hay necesidad de hacerlos todo el tiempo!
 def chequeTotal(tablero: [[str]]):
     ganador = "nadie"
     for i in range(0,3):
@@ -74,18 +91,21 @@ def chequeTotal(tablero: [[str]]):
                     ganador = chequeoDiagonalDer(tablero, tablero[i][j])
             elif tablero[i][j] == "v":
                 pass
+    #Chequea si no hay casillas vacias y aun no hay ganador para declarar un empate
     if not(any(any(tablero[i][j] == "v" for j in range(0,3)) for i in range(0,3))) and ganador == "nadie":
         return("empate")
 
     return ganador
 
 
+#Printea de forma bonita el tablero
 def tableroConsola(tablero: [[str]]):
     for i in tablero:
         print(i)
     print("\n\n\n")
 
 
+#No lo uso en ningun momento????
 def printHijo(child: [[[str]]]):
     for i in child:
         for j in i:
@@ -93,6 +113,7 @@ def printHijo(child: [[[str]]]):
         print("\n")
 
 
+#Retorna todas las posibles jugadas que puede hacer el jugador "turno" en un estado
 def posiblesJugadas(tablero: [[str]], turno: str):
     derivados = []
     for i in range(0,3):
@@ -104,21 +125,30 @@ def posiblesJugadas(tablero: [[str]], turno: str):
     return derivados 
 
 
+
+#Algoritmo de minimax para determinar la mejor jugada de la computadora!
+#TODO-LIST
+#El parametro ganador no se usa nunca, quitarlo
+#Explicar brevemente el funcionamiento del algoritmos
+#Comentar los parametros dado a que este es el componente que me interesaba aprender
 def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "nadie"):
-    print("profundidad_actual: %s"%profundidad_actual)
-    tableroConsola(tablero)
+    #print("profundidad_actual: %s"%profundidad_actual)
+    #tableroConsola(tablero)
     if profundidad_actual == 0 or chequeTotal(tablero) != "nadie":
         if chequeTotal(tablero) == "c":
-            print("gana compu!!")
-            tableroConsola(tablero)
+            #print("gana compu!!")
+            #tableroConsola(tablero)
             return 999+profundidad_actual
         elif chequeTotal(tablero) == "j":
-            print("gana jugador!")
-            tableroConsola(tablero)
+            #print("gana jugador!")
+            #tableroConsola(tablero)
             return -999
+        #En caso de que no se llegue a un estado terminal
         return 0
 
+    #Turno de la computadora, se trata de maximizar su puntuacion
     if compu:
+    	#No seria mejor default value o worst?
         bestValue = 0
         for child in posiblesJugadas(tablero,"c"):
             #print("child c")
@@ -126,11 +156,12 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
             v = miniMax(child,profundidad_actual-1,False)
             print(v)
             bestValue = max(bestValue,v)
-            print("best value compu")
-            print(bestValue)
+            #print("best value compu")
+            #print(bestValue)
             tableroConsola(child)
         return bestValue
     
+    #Turno del jugador, se trata de minimizar su puntuacion
     elif not(compu):
         bestValue = 0
         for child in posiblesJugadas(tablero,"j"):
@@ -138,12 +169,16 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
             #tableroConsola(child)
             v = miniMax(child,profundidad_actual-1,True)
             bestValue = min(bestValue,v)
-            print("best value jugador")
-            print(bestValue)
+            #print("best value jugador")
+            #print(bestValue)
             tableroConsola(child)
         return bestValue
 
 
+#Turno de la computadora
+#TODO-LIST!
+#Explicar como funciona brevemente
+#Chequear si se puede mejorar
 def turnoCompu(tablero: [[str]]):
     puntos = []
     for i in range(0,3):
@@ -168,8 +203,14 @@ def turnoCompu(tablero: [[str]]):
     print(maxJ)
     return maxJ
 
+
+#LOOP del juego
+#TODO-LIST
+#Convertirlo en una funcion!
+#Hacer una funcion que reinicie el tablero!
+#Hacer que finalice!
 resp = None
-turno = "c"
+turno = "j"
 while resp != 3:
     tableroConsola(tableroVieja)
     if turno == "j":
