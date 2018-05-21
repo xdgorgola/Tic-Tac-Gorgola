@@ -11,13 +11,13 @@ tableroVieja = [["v","v","v"],
 
 #Simplemente pide y refleja una jugada *valga la redundancia* del jugador
 def elegirJugada(turno: str, tablero: [[str]]):
-	while True:
-    	jugada = (int(input("Fila: ")),int(input("Columna: ")))
-    	try:
-    		assert(0 <= jugada[0] <= 2 and 0 <= jugada[1] <= 2)
-    		break
-    	except:
-    		print("Rango de valores permitidos: 0-2.\nVolviendo a intentar...")
+    while True:
+        jugada = (int(input("Fila: ")),int(input("Columna: ")))
+        try:
+            assert(0 <= jugada[0] <= 2 and 0 <= jugada[1] <= 2)
+            break
+        except:
+            print("Rango de valores permitidos: 0-2.\nVolviendo a intentar...")
     tablero[jugada[0]][jugada[1]] = turno
 
 
@@ -148,7 +148,7 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
 
     #Turno de la computadora, se trata de maximizar su puntuacion
     if compu:
-    	#No seria mejor default value o worst?
+        #No seria mejor default value o worst?
         bestValue = 0
         for child in posiblesJugadas(tablero,"c"):
             #print("child c")
