@@ -1,3 +1,27 @@
+#import pygame
+
+#FPS = 30
+#
+##Colores
+#NEGRO = (0, 0, 0)
+#GRIS = (186, 184, 184)
+#BLANCO = (255, 255, 255)
+#ROJO = (255, 0, 0)
+#VERDE = (0, 255, 0)
+#VERDE_ALT = (0, 148, 50)
+#VERDE_OSCURO = (0, 100, 0)
+#AZUL = (0, 0, 255)
+#ARENA = (206,204,126)
+#MARRON = (128,112,68)
+#
+##Ventana
+#ANCHO = 1000
+#ALTO = 1000
+#
+##Fuente
+#pygame.font.init()
+#sans = pygame.font.SysFont('Comic Sans MS', 100)
+
 tableroVieja = [["v","v","v"],
                 ["v","v","v"],
                 ["v","v","v"]]
