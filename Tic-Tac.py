@@ -130,7 +130,12 @@ def posiblesJugadas(tablero: [[str]], turno: str):
 #TODO-LIST
 #El parametro ganador no se usa nunca, quitarlo
 #Explicar brevemente el funcionamiento del algoritmos
-#Comentar los parametros dado a que este es el componente que me interesaba aprender
+#Mejorar la condicion terminal con profundidad_actual
+#PARAMETROS:
+#   tablero: Tablero del juego
+#   profundidad_actual: Que tanto va a explorar el algoritmo los posibles estados de la partidad
+#   compu: Indica si es el turno de la computadora o el jugador
+#
 def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "nadie"):
     #print("profundidad_actual: %s"%profundidad_actual)
     #tableroConsola(tablero)
