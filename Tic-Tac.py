@@ -1,4 +1,3 @@
-import copy 
 #tableroVieja = [["v","v","v"],
 #                ["v","v","j"],
 #                ["c","j","j"]]
@@ -98,7 +97,7 @@ def posiblesJugadas(tablero: [[str]], turno: str):
     derivados = []
     for i in range(0,3):
         for j in range(0,3):
-            tab3 = copy.deepcopy(tablero)
+            tab3 = list(map(list,tablero))
             if tablero[i][j] == "v":
                 tab3[i][j] = turno
                 derivados.append(tab3)
@@ -118,14 +117,6 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
             tableroConsola(tablero)
             return -999
         return 0
-        #elif chequeTotal(tablero) == "empate":
-        #    tableroConsola(tablero)
-        #    print("empate")
-        #    return 0
-        #elif chequeTotal(tablero) == "nadie" and profundidad_actual == 0:
-        #    tableroConsola(tablero)
-        #    print("nadie gana")
-        #    return 0
 
     if compu:
         bestValue = 0
@@ -155,11 +146,10 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
 
 def turnoCompu(tablero: [[str]]):
     puntos = []
-    tabAux = copy.deepcopy(tablero)
     for i in range(0,3):
-        tabAux = copy.deepcopy(tablero)
+        tabAux = list(map(list,tablero))
         for j in range(0,3):
-            tabAux2 = copy.deepcopy(tabAux)
+            tabAux2 = list(map(list,tabAux))
             if tabAux2[i][j] == "v":
                 tabAux2[i][j] = "c"
                 puntos.append([(i,j),miniMax(tabAux2,4,False)])
