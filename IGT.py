@@ -40,7 +40,7 @@ def dibujarTableroVacio():
 
 def dibujarX(posY: int, posX: int):
 	tab = pygame.Surface((160,160))
-	tab.fill(NEGRO)
+	tab.fill(GRIS)
 	pygame.draw.line(tab,MARRON,(0,0),(160,160),14)
 	pygame.draw.line(tab,MARRON,(160,0),(0,160),14)
 	pantalla.blit(tab,(120+200*(posX),120+200*(posY)))
@@ -49,7 +49,7 @@ def dibujarX(posY: int, posX: int):
 
 def dibujarO(posY: int, posX: int):
 	tab = pygame.Surface((160,160))
-	tab.fill(NEGRO)
+	tab.fill(GRIS)
 	pygame.draw.circle(tab,MARRON,(80,80),80,10)
 	pantalla.blit(tab,(120+200*(posX),120+200*(posY)))
 	pygame.display.flip()
