@@ -1,3 +1,6 @@
+import pygame
+import IGT
+
 tableroVieja = [["v","v","v"],
                 ["v","v","v"],
                 ["v","v","v"]]
@@ -216,18 +219,23 @@ def turnoCompu(tablero: [[str]]):
 #Hacer que finalice!
 resp = None
 turno = "j"
+pygame.init()
+IGT.dibujarTableroVacio()
 while resp != 3:
+
     tableroConsola(tableroVieja)
     if turno == "j":
         f = int(input("fila> "))
         c = int(input("columna> "))
         tableroVieja[f][c] = "j"
+        IGT.dibujarX(f,c)
         turno = "c"
     elif turno == "c":
         jugada = turnoCompu(tableroVieja)
         print("jugada final: ",jugada)
         tableroVieja[jugada[0]][jugada[1]] = "c"
         turno = "j"
+        IGT.dibujarO(jugada[0],jugada[1])
     print("\n tablero post jugada!")
     tableroConsola(tableroVieja)
     resp = int(input("3 para salir> "))
