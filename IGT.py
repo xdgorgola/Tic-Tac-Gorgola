@@ -1,5 +1,4 @@
 import pygame
-#import Tic-Tac
 
 FPS = 30
 
@@ -40,17 +39,27 @@ def dibujarTableroVacio():
 
 
 def dibujarX(posY: int, posX: int):
-	tab = pygame.Surface((194,194))
-	tab.fill(GRIS)
-	pygame.draw.line(tab,MARRON,(0,0),(194,194),8)
-	pygame.draw.line(tab,MARRON,(194,0),(0,194),8)
-	pantalla.blit(tab,(100*(posX+1),100*(posY+1)))
+	tab = pygame.Surface((160,160))
+	tab.fill(NEGRO)
+	pygame.draw.line(tab,MARRON,(0,0),(160,160),14)
+	pygame.draw.line(tab,MARRON,(160,0),(0,160),14)
+	pantalla.blit(tab,(120+200*(posX),120+200*(posY)))
+	pygame.display.flip()
+
+
+def dibujarO(posY: int, posX: int):
+	tab = pygame.Surface((160,160))
+	tab.fill(NEGRO)
+	pygame.draw.circle(tab,MARRON,(80,80),80,10)
+	pantalla.blit(tab,(120+200*(posX),120+200*(posY)))
 	pygame.display.flip()
 
 
 #Inicio pygame
-pygame.init()
-dibujarTableroVacio()
-dibujarX(0,0)
-x = int(input(""))
-pygame.quit()
+#pygame.init()
+#dibujarTableroVacio()
+#for i in range(0,3):
+#	for j in range(0,3):
+#		dibujarO(i,j)
+#x = int(input(""))
+#pygame.quit()
