@@ -39,8 +39,18 @@ def dibujarTableroVacio():
 	pygame.display.flip()
 
 
+def dibujarX(posY: int, posX: int):
+	tab = pygame.Surface((194,194))
+	tab.fill(GRIS)
+	pygame.draw.line(tab,MARRON,(0,0),(194,194),8)
+	pygame.draw.line(tab,MARRON,(194,0),(0,194),8)
+	pantalla.blit(tab,(100*(posX+1),100*(posY+1)))
+	pygame.display.flip()
+
+
 #Inicio pygame
 pygame.init()
 dibujarTableroVacio()
+dibujarX(0,0)
 x = int(input(""))
 pygame.quit()
