@@ -212,6 +212,22 @@ def turnoCompu(tablero: [[str]]):
     return maxJ
 
 
+
+def posClicks(click_event: (int,int)):
+    print(click_event)
+    mouseX, mouseY = click_event
+    listoX, listoY = False, False
+    for i in range(0,3):
+        if (not(listoX) or not(listoY)):
+            if (100+200*i) <= mouseX <= (100+200*(i+1)):
+                posibX = i
+                listoX = True
+            if (100+200*i) <= mouseY <= (100+200*(i+1)):
+                posibY = i
+                listoY = True
+    if listoY and listoX:
+        return posibX, posibY
+
 #LOOP del juego
 #TODO-LIST
 #Convertirlo en una funcion!
@@ -221,15 +237,27 @@ resp = None
 turno = "j"
 pygame.init()
 IGT.dibujarTableroVacio()
-while resp != 3:
 
-    tableroConsola(tableroVieja)
+#Variable del ciclo
+jugando = True
+while jugando:
     if turno == "j":
-        f = int(input("fila> "))
-        c = int(input("columna> "))
-        tableroVieja[f][c] = "j"
-        IGT.dibujarX(f,c)
-        turno = "c"
+        seleccionando = True
+        #TECLAS/MOUSE
+        while seleccionando:
+            for event in pygame.event.get():
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_ESCAPE:
+                        seleccionando, jugando = False, False
+                elif event.type == pygame.QUIT:
+                    seleccionando, jugando = False, False
+                elif event.type == pygame.MOUSEBUTTONDOWN:
+                    if 100 <= event.pos[0] <= 100+200*3 and 100 <= event.pos[1] <= 100+200*3:
+                        posX, posY = posClicks(event.pos)
+                        IGT.dibujarX(posY,posX)
+                        tableroVieja[posY][posX] = "j"
+                        turno = "c"
+                        seleccionando = False
     elif turno == "c":
         jugada = turnoCompu(tableroVieja)
         print("jugada final: ",jugada)
@@ -238,4 +266,4 @@ while resp != 3:
         IGT.dibujarO(jugada[0],jugada[1])
     print("\n tablero post jugada!")
     tableroConsola(tableroVieja)
-    resp = int(input("3 para salir> "))
+pygame.quit()
