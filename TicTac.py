@@ -1,17 +1,6 @@
 import pygame
 import IGT
 
-tableroVieja = [["v","v","v"],
-                ["v","v","v"],
-                ["v","v","v"]]
-
-
-#CONSIDERACIONES RESPECTO AL TABLERO:
-# "v": Casilla vacia
-# "j": Jugador
-# "c": Computadora
-
-
 #Simplemente pide y refleja una jugada *valga la redundancia* del jugador
 def elegirJugada(turno: str, tablero: [[str]]):
     while True:
@@ -108,23 +97,13 @@ def tableroConsola(tablero: [[str]]):
     print("\n\n\n")
 
 
-#No lo uso en ningun momento????
-def printHijo(child: [[[str]]]):
-    for i in child:
-        for j in i:
-            print(j)
-        print("\n")
-
-
 #Retorna todas las posibles jugadas que puede hacer el jugador "turno" en un estado
 def posiblesJugadas(tablero: [[str]], turno: str):
     derivados = []
     for i in range(0,3):
         for j in range(0,3):
-            tab3 = list(map(list,tablero))
             if tablero[i][j] == "v":
-                tab3[i][j] = turno
-                derivados.append(tab3)
+                derivados.append((i,j))
     return derivados 
 
 
@@ -148,49 +127,41 @@ def casillasVacias(tablero: [[str]]):
 #   profundidad_actual: Que tanto va a explorar el algoritmo los posibles estados de la partidad
 #   compu: Indica si es el turno de la computadora o el jugador
 #
-def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "nadie"):
-    #print("profundidad_actual: %s"%profundidad_actual)
-    #tableroConsola(tablero)
-    #if profundidad_actual == 0 or chequeTotal(tablero) != "nadie":
+
+def miniMax(tablero: [[str]], profundidad_actual = 9, compu = True, jugada = (0,0)):
     if chequeTotal(tablero) == "c":
         print("gana compu!!wo")
         tableroConsola(tablero)
         return 10+profundidad_actual
     elif chequeTotal(tablero) == "j":
-        #print("gana jugador!")
-        #tableroConsola(tablero)
+        print("gana jugador :(")
+        tableroConsola(tablero)
         return -10
-    #En caso de que no se llegue a un estado terminal
     elif chequeTotal(tablero) == "empate":
+        print("hay empate")
+        tableroConsola(tablero)
         return 0
+    
     #Turno de la computadora, se trata de maximizar su puntuacion
     if compu:
-        #No seria mejor default value o worst?
-        bestValue = 0
-        for child in posiblesJugadas(tablero,"c"):
-            #print("child c")
-            #tableroConsola(child)
-            v = miniMax(child,profundidad_actual-1,False)
-            print(v, "result mini")
-            bestValue = max(bestValue,v)
-            print(bestValue)
-            print("el bestValue")
-            print("best value compu")
-            print(bestValue)
-            tableroConsola(child)
+        bestValue = -900
+        jugadasPos = posiblesJugadas(tablero,"c")
+        for jugadas in jugadasPos:
+            tabAux = list(map(list,tablero))
+            tabAux[jugadas[0]][jugadas[1]] = "c"
+            value = miniMax(tabAux,profundidad_actual-1,False,jugadas)
+            bestValue = max(bestValue,value)
         return bestValue
     
     #Turno del jugador, se trata de minimizar su puntuacion
     elif not(compu):
-        bestValue = 0
-        for child in posiblesJugadas(tablero,"j"):
-            #print("child j")
-            #tableroConsola(child)
-            v = miniMax(child,profundidad_actual-1,True)
-            bestValue = min(bestValue,v)
-            print("best value jugador")
-            print(bestValue)
-            tableroConsola(child)
+        bestValue = 900
+        jugadasPos = posiblesJugadas(tablero,"j")
+        for jugadas in jugadasPos:
+            tabAux = list(map(list,tablero))
+            tabAux[jugadas[0]][jugadas[1]] = "j"
+            value = miniMax(tabAux,profundidad_actual-1,True,jugadas)
+            bestValue = min(bestValue,value)
         return bestValue
 
 
@@ -206,9 +177,7 @@ def turnoCompu(tablero: [[str]]):
             tabAux2 = list(map(list,tabAux))
             if tabAux2[i][j] == "v":
                 tabAux2[i][j] = "c"
-                puntos.append([(i,j),miniMax(tabAux2,4,False)])
-                print("xdddddddddddddddddd")
-                print(puntos)
+                puntos.append([(i,j),miniMax(tabAux2,9,False)])
     maxJ = puntos[0][0]
     maxP = puntos[0][1]         
     for puntuaciones in puntos:
@@ -238,6 +207,16 @@ def posClicks(click_event: (int,int)):
                 listoY = True
     if listoY and listoX:
         return posibX, posibY
+
+
+
+#CONSIDERACIONES RESPECTO AL TABLERO:
+# "v": Casilla vacia
+# "j": Jugador
+# "c": Computadora
+tableroVieja = [["v","v","v"],
+                ["v","v","v"],
+                ["v","v","v"]]
 
 #LOOP del juego
 #TODO-LIST
