@@ -128,18 +128,18 @@ def casillasVacias(tablero: [[str]]):
 #   compu: Indica si es el turno de la computadora o el jugador
 #
 
-def miniMax(tablero: [[str]], profundidad_actual = 9, compu = True, jugada = (0,0)):
+def miniMax(tablero: [[str]], profundidad_actual = 9, compu = True):
     if chequeTotal(tablero) == "c":
-        print("gana compu!!wo")
-        tableroConsola(tablero)
+        #print("gana compu!!wo")
+        #tableroConsola(tablero)
         return 10+profundidad_actual
     elif chequeTotal(tablero) == "j":
-        print("gana jugador :(")
-        tableroConsola(tablero)
+        #print("gana jugador :(")
+        #tableroConsola(tablero)
         return -10
     elif chequeTotal(tablero) == "empate":
-        print("hay empate")
-        tableroConsola(tablero)
+        #print("hay empate")
+        #tableroConsola(tablero)
         return 0
     
     #Turno de la computadora, se trata de maximizar su puntuacion
@@ -149,7 +149,7 @@ def miniMax(tablero: [[str]], profundidad_actual = 9, compu = True, jugada = (0,
         for jugadas in jugadasPos:
             tabAux = list(map(list,tablero))
             tabAux[jugadas[0]][jugadas[1]] = "c"
-            value = miniMax(tabAux,profundidad_actual-1,False,jugadas)
+            value = miniMax(tabAux,profundidad_actual-1,False)
             bestValue = max(bestValue,value)
         return bestValue
     
@@ -160,7 +160,7 @@ def miniMax(tablero: [[str]], profundidad_actual = 9, compu = True, jugada = (0,
         for jugadas in jugadasPos:
             tabAux = list(map(list,tablero))
             tabAux[jugadas[0]][jugadas[1]] = "j"
-            value = miniMax(tabAux,profundidad_actual-1,True,jugadas)
+            value = miniMax(tabAux,profundidad_actual-1,True)
             bestValue = min(bestValue,value)
         return bestValue
 
@@ -224,7 +224,7 @@ tableroVieja = [["v","v","v"],
 #Hacer una funcion que reinicie el tablero!
 #Hacer que finalice!
 resp = None
-turno = "j"
+turno = "c"
 pygame.init()
 IGT.dibujarTableroVacio()
 
