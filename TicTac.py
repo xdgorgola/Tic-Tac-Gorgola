@@ -128,12 +128,21 @@ def posiblesJugadas(tablero: [[str]], turno: str):
     return derivados 
 
 
+def casillasVacias(tablero: [[str]]):
+    c = 0
+    for i in range(0,3):
+        for j in range(0,3):
+            if tablero[i][j] == "v":
+                c = c + 1
+    return c
+
 
 #Algoritmo de minimax para determinar la mejor jugada de la computadora!
 #TODO-LIST
 #El parametro ganador no se usa nunca, quitarlo
 #Explicar brevemente el funcionamiento del algoritmos
 #Mejorar la condicion terminal con profundidad_actual
+#Chequear chequeTotal, llega a terminales del jugador sin haber ganado
 #PARAMETROS:
 #   tablero: Tablero del juego
 #   profundidad_actual: Que tanto va a explorar el algoritmo los posibles estados de la partidad
@@ -142,18 +151,18 @@ def posiblesJugadas(tablero: [[str]], turno: str):
 def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "nadie"):
     #print("profundidad_actual: %s"%profundidad_actual)
     #tableroConsola(tablero)
-    if profundidad_actual == 0 or chequeTotal(tablero) != "nadie":
-        if chequeTotal(tablero) == "c":
-            #print("gana compu!!")
-            #tableroConsola(tablero)
-            return 999+profundidad_actual
-        elif chequeTotal(tablero) == "j":
-            #print("gana jugador!")
-            #tableroConsola(tablero)
-            return -999
-        #En caso de que no se llegue a un estado terminal
+    #if profundidad_actual == 0 or chequeTotal(tablero) != "nadie":
+    if chequeTotal(tablero) == "c":
+        print("gana compu!!wo")
+        tableroConsola(tablero)
+        return 10+profundidad_actual
+    elif chequeTotal(tablero) == "j":
+        #print("gana jugador!")
+        #tableroConsola(tablero)
+        return -10
+    #En caso de que no se llegue a un estado terminal
+    elif chequeTotal(tablero) == "empate":
         return 0
-
     #Turno de la computadora, se trata de maximizar su puntuacion
     if compu:
         #No seria mejor default value o worst?
@@ -162,10 +171,12 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
             #print("child c")
             #tableroConsola(child)
             v = miniMax(child,profundidad_actual-1,False)
-            print(v)
+            print(v, "result mini")
             bestValue = max(bestValue,v)
-            #print("best value compu")
-            #print(bestValue)
+            print(bestValue)
+            print("el bestValue")
+            print("best value compu")
+            print(bestValue)
             tableroConsola(child)
         return bestValue
     
@@ -177,8 +188,8 @@ def miniMax(tablero: [[str]], profundidad_actual = 6, compu = True, ganador = "n
             #tableroConsola(child)
             v = miniMax(child,profundidad_actual-1,True)
             bestValue = min(bestValue,v)
-            #print("best value jugador")
-            #print(bestValue)
+            print("best value jugador")
+            print(bestValue)
             tableroConsola(child)
         return bestValue
 
@@ -252,6 +263,8 @@ while jugando:
                 elif event.type == pygame.QUIT:
                     seleccionando, jugando = False, False
                 elif event.type == pygame.MOUSEBUTTONDOWN:
+                    #Si el click esta dentro del tablero, procede a calcular sus posiciones respectivas
+                    #en el tablero logico
                     if 100 <= event.pos[0] <= 100+200*3 and 100 <= event.pos[1] <= 100+200*3:
                         posX, posY = posClicks(event.pos)
                         IGT.dibujarX(posY,posX)
