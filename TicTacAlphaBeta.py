@@ -229,7 +229,7 @@ tableroVieja = [["v","v","v"],
 #Hacer una funcion que reinicie el tablero!
 #Hacer que finalice!
 resp = None
-turno = "c"
+turno = "j"
 pygame.init()
 IGT.dibujarTableroVacio()
 
